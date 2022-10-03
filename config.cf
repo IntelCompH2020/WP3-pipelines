@@ -1,0 +1,7 @@
+[data]
+
+patstat = /export/ml4ds/IntelComp/Datalake/PATSTAT/2022_Spring
+
+openaire = file:///export/data_ml4ds/IntelComp/Datasets/openaire
+
+semanticscholar = /export/ml4ds/IntelComp/Datalake/SemanticScholar/20220201
