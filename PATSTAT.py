@@ -12,19 +12,19 @@ def gen_PT_metadata(spark):
     cf = ConfigParser()
     cf.read("config.cf")
 
-    dir_pt = Path(cf.get("data", "patstat"))
+    dir_db = Path(cf.get("data", "patstat"))
 
     #################################################
     #### Load info
     #################################################
-    pt = spark.read.parquet(dir_pt.joinpath("patstat_appln.parquet").as_posix())
+    pt = spark.read.parquet(dir_db.joinpath("patstat_appln.parquet").as_posix())
 
     # Key bibliographical data elements relevant to identify patent publications
-    pt_pub = spark.read.parquet(dir_pt.joinpath("tls211.parquet").as_posix()).select(
+    pt_pub = spark.read.parquet(dir_db.joinpath("tls211.parquet").as_posix()).select(
         "appln_id", "pat_publn_id", "publn_kind"
     )
     # Links between publications, applications and non-patent literature documents with regards to citations.
-    pt_cit = spark.read.parquet(dir_pt.joinpath("tls212.parquet").as_posix()).select(
+    pt_cit = spark.read.parquet(dir_db.joinpath("tls212.parquet").as_posix()).select(
         "pat_publn_id", "cited_pat_publn_id", "cited_appln_id", "cited_npl_publn_id"
     )
     cit_appln = pt_cit.select("pat_publn_id", "cited_appln_id").where(
@@ -149,7 +149,7 @@ def gen_PT_metadata(spark):
     df.printSchema()
     df.show(truncate=False)
     df.write.parquet(
-        "/export/ml4ds/IntelComp/Datalake/PATSTAT/metadata.parquet",
+        dir_db.joinpath("metadata.parquet").as_posix(),
         mode="overwrite",
     )
 

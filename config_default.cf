@@ -1,0 +1,7 @@
+[data]
+# patstat:          patstat directory
+# openaire:         openaire directory
+# semanticscholar:  semanticscholar directory
+patstat = 
+openaire = 
+semanticscholar = 

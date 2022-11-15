@@ -238,13 +238,13 @@ def gen_OA_metadata(spark):
     cf = ConfigParser()
     cf.read("config.cf")
 
-    dir_oa = Path(cf.get("data", "openaire"))
+    dir_db = Path(cf.get("data", "openaire"))
 
     #################################################
     #### Load info
     #################################################
-    df = spark.read.parquet(dir_oa.joinpath("publication").as_posix())
-    df_ref = spark.read.parquet(dir_oa.joinpath("relation").as_posix())
+    df = spark.read.parquet(dir_db.joinpath("publication").as_posix())
+    df_ref = spark.read.parquet(dir_db.joinpath("relation").as_posix())
 
     #################################################
     #### Filter OpenAIRE
@@ -706,7 +706,7 @@ def gen_OA_metadata(spark):
     df.printSchema()
     df.show(truncate=False)
     df.write.parquet(
-        "/export/ml4ds/IntelComp/Datalake/OpenAIRE/metadata.parquet",
+        dir_db.joinpath("metadata.parquet").as_posix(),
         mode="overwrite",
     )
 

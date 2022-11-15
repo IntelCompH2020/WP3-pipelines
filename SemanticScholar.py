@@ -15,13 +15,13 @@ def gen_SS_metadata(spark):
     cf = ConfigParser()
     cf.read("config.cf")
 
-    dir_ss = Path(cf.get("data", "semanticscholar"))
+    dir_db = Path(cf.get("data", "semanticscholar"))
 
     #################################################
     #### Load info
     #################################################
-    ss = spark.read.parquet(dir_ss.joinpath("papers.parquet").as_posix())
-    ss_cit = spark.read.parquet(dir_ss.joinpath("citations.parquet").as_posix())
+    ss = spark.read.parquet(dir_db.joinpath("papers.parquet").as_posix())
+    ss_cit = spark.read.parquet(dir_db.joinpath("citations.parquet").as_posix())
 
     #################################################
     #### Citation information
@@ -104,7 +104,7 @@ def gen_SS_metadata(spark):
     df.printSchema()
     df.show(truncate=False)
     df.write.parquet(
-        "/export/ml4ds/IntelComp/Datalake/SemanticScholar/metadata.parquet",
+        dir_db.joinpath("metadata.parquet").as_posix(),
         mode="overwrite",
     )
 
